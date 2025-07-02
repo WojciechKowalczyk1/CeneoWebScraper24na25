@@ -1,8 +1,65 @@
 {% extends "base.html" %}
 
+{% block title %}
+Strona Główna
+{% endblock %}
+
 {% block content %}
-    <div class="text-center">
-        <h2>Witaj na stronie głównej!</h2>
-        <p>To jest główna strona aplikacji Ceneo.pl Web Scraper.</p>
+<div class="container my-5">
+    <div class="row mb-5">
+        <div class="col text-center">
+            <h1 class="display-5 text-dark">CeneoWebScraper</h1>
+            <p class="lead text-secondary">Narzędzie do analizy opinii i ocen produktów z serwisu Ceneo</p>
+        </div>
     </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="h4 text-primary">📌 Cel aplikacji</h2>
+            <p class="text-dark">
+                CeneoWebScraper umożliwia szybkie pobieranie oraz analizę opinii i ocen produktów z portalu Ceneo.
+                Dzięki niemu użytkownicy mogą zapoznać się z ocenami, komentarzami oraz statystykami dotyczącymi dowolnego produktu
+                i podejmować świadome decyzje zakupowe.
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="h4 text-primary">⚙️ Jak to działa?</h2>
+            <p class="text-dark">
+                Wystarczy wpisać unikalny identyfikator produktu, aby aplikacja automatycznie pobrała wszystkie dostępne opinie.
+                Opinie można przeglądać w tabeli, filtrować i sortować według daty, oceny, autora czy rekomendacji.
+                Dostępna jest również opcja pobrania danych w formacie JSON oraz generowania czytelnych wykresów.
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="h4 text-primary">📚 Wykorzystane technologie</h2>
+            <ul class="list-unstyled text-dark">
+                <li><strong>Flask</strong> – szybkie i lekkie środowisko do budowy aplikacji webowych.</li>
+                <li><strong>Requests</strong> – ułatwia wysyłanie zapytań HTTP do serwisu Ceneo.</li>
+                <li><strong>BeautifulSoup</strong> – pozwala na precyzyjne wydobycie danych z kodu HTML.</li>
+                <li><strong>Pandas & NumPy</strong> – służą do przetwarzania i analizy danych.</li>
+                <li><strong>Bootstrap</strong> – zapewnia responsywny i estetyczny interfejs.</li>
+                <li><strong>Jinja2</strong> – generuje dynamiczne strony HTML z poziomu backendu.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="h4 text-primary">🧠 Funkcjonalności aplikacji</h2>
+            <ul class="list-unstyled text-dark">
+                <li>🔍 Pobieranie opinii na podstawie ID produktu</li>
+                <li>📊 Analiza średniej oceny, liczby opinii, wad i zalet</li>
+                <li>🗂️ Filtrowanie i sortowanie opinii według różnych kryteriów</li>
+                <li>📈 Tworzenie wykresów przedstawiających rozkład ocen i rekomendacji</li>
+                <li>💾 Eksport danych do formatu JSON</li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}
+Produkt {{ product.product_id }}
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ product.product_name }}</h2>
+    <br />
+    <div class="row mb-3">
+        <div class="col-md-12 text-start">
+            <a href="{{ url_for('download_json', product_id=product.product_id) }}"
+               class="btn btn-secondary me-2 d-inline-flex align-items-center">
+                <img src="{{ url_for('static', filename='icons/download_icon.png') }}" alt="Download" width="20" height="20" class="me-2">
+                Pobierz JSON
+            </a>
+            <a href="{{ url_for('charts', product_id=product.product_id) }}"
+               class="btn btn-warning d-inline-flex align-items-center">
+                <img src="{{ url_for('static', filename='icons/chart_icon.png') }}" alt="Charts" width="20" height="20" class="me-2">
+                Wykresy
+            </a>
+        </div>       
+    </div>
+    <form method="GET" action="{{ url_for('product', product_id=product.product_id) }}" class="mb-3">
+        <div class="row">
+            <div class="col-md-3">
+                <select name="sort_by" class="form-control">
+                    <option value="stars" {% if request.args.get('sort_by') == 'stars' %}selected{% endif %}>Liczba gwiazdek</option>
+                    <option value="post_date" {% if request.args.get('sort_by') == 'post_date' %}selected{% endif %}>Data opinii</option>
+                    <option value="purchase_date" {% if request.args.get('sort_by') == 'purchase_date' %}selected{% endif %}>Data zakupu</option>
+                    <option value="useful" {% if request.args.get('sort_by') == 'useful' %}selected{% endif %}>Liczba przydatnych</option>
+                    <option value="useless" {% if request.args.get('sort_by') == 'useless' %}selected{% endif %}>Liczba nieprzydatnych</option>
+                    <option value="pros" {% if request.args.get('sort_by') == 'pros' %}selected{% endif %}>Liczba zalet</option>
+                    <option value="cons" {% if request.args.get('sort_by') == 'cons' %}selected{% endif %}>Liczba wad</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="reverse" class="form-control">
+                    <option value="false" {% if request.args.get('reverse') == 'false' %}selected{% endif %}>Rosnąco</option>
+                    <option value="true" {% if request.args.get('reverse') == 'true' %}selected{% endif %}>Malejąco</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Sortuj</button>
+            </div>
+        </div>
+    </form>
+    <form method="GET" action="{{ url_for('product', product_id=product.product_id) }}" class="mb-3">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" name="filter_by" class="form-control" placeholder="Filtruj po treści" value="{{ request.args.get('filter_by', '') }}" required>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success">Filtruj</button>
+            </div>
+        </div>
+    </form>
+    {% if opinions %}
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Autor</th>
+                <th>Rekomendacja</th>
+                <th>Liczba gwiazdek</th>
+                <th>Potwierdzony zakup</th>
+                <th>Data opinii</th>
+                <th>Data zakupu</th>
+                <th>Przydatna</th>
+                <th>Nieprzydatna</th>
+                <th>Treść</th>
+                <th>Zalety</th>
+                <th>Wady</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for op in opinions %}
+            <tr>
+                <td>{{ op.opinion_id }}</td>
+                <td>{{ op.author }}</td>
+                <td>
+                    {% if op.recommendation == "Polecam" %}
+                        <span class="text-success">{{ op.recommendation }}</span>
+                    {% elif op.recommendation == "Nie polecam" %}
+                        <span class="text-danger">{{ op.recommendation }}</span>
+                    {% else %}
+                        <span class="text-muted">Brak</span>
+                    {% endif %}
+                </td>
+                <td>{{ op.stars }}</td>
+                <td>{{ "Tak" if op.purchased else "Nie" }}</td>
+                <td>{{ op.post_date }}</td>
+                <td>{{ op.purchase_date }}</td>
+                <td>{{ op.useful }}</td>
+                <td>{{ op.useless }}</td>
+                <td>
+                    {% if op.content|length > 40 %}
+                        <div class="content-preview">
+                            <p class="content-text">
+                                {{ op.content[:40] }}... 
+                            </p>
+                            <button class="btn btn-link btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#content-{{ op.opinion_id }}" aria-expanded="false" aria-controls="content-{{ op.opinion_id }}">
+                                Więcej
+                            </button>
+                            <div class="collapse" id="content-{{ op.opinion_id }}">
+                                <p>{{ op.content }}</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>{{ op.content }}</p>
+                    {% endif %}
+                </td>
+                <td>{{ op.pros | join(", ") if op.pros else "—" }}</td>
+                <td>{{ op.cons | join(", ") if op.cons else "—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Brak wyników dla zastosowanych parametrów wyszukiwania.</p>
+    {% endif %}
+</div>
+{% endblock %}
